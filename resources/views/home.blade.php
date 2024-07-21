@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="hero__items set-bg" data-setbg="img/hero/hero-2.jpg">
             <div class="container">
                 <div class="row">

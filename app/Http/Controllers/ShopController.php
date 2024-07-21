@@ -18,6 +18,7 @@ class ShopController extends Controller
         $product = Product::where('id', $id);
         return view('shopchitiet', ['products' => $product]);
     }
+    
     public function addcart(Request $request)
     {
     }

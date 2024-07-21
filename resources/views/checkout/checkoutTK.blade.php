@@ -1,3 +1,6 @@
+@extends('layout');
+@section('content');
+
 <style>
     h1 {
         color: green;
@@ -16,3 +19,4 @@
         <a class="btn btn-primary" href="{{url('shop')}}">back to shop</a>
     </div>
 </div>
+@endsection

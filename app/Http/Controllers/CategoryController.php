@@ -13,11 +13,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        echo "index call create ";
-        // $categories = DB::table('category')->select('id', 'name', 'description');
         $categories = Category::all();
         // $results  = ($categories->get());
-        return view('category.list', ['categories' => $categories]);
+        $template = 'category.list';
+
+        return view('dashboard.layout', compact(
+            'template',
+            'categories'
+        ));
     }
 
 
@@ -27,10 +30,16 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        echo "index call create ";
+
         $categories = DB::table('category')->select('id', 'name');
         $results  = ($categories->get());
-        return view('category.create', ['category' => $results]);
+        $template = 'category.create';
+
+        return view('dashboard.layout', compact(
+            'template',
+            'categories',
+            'results'
+        ));
     }
 
     /**
@@ -58,12 +67,20 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id )
     {
-        echo "index call ";
-        $categories = Category::where('id', $id);
-        $results  = ($categories->get());
-        return view('category.edit', ['category' => $results[0]]);
+
+        $result = Category::where('id', $id)->first();
+        $template = 'category.edit';
+        
+        // var_dump($results[0]->name);
+       
+        return view('dashboard.layout',compact(
+            'template' ,
+            'result' 
+        ));
+
+        
     }
 
     /**
@@ -76,6 +93,12 @@ class CategoryController extends Controller
             'description' => 'required',
         ]);
         var_dump($request->all());
+
+
+         // return $result->update([
+        //     'name' => $request->input()['name'],
+        //     'description' => $request->input()['decription']
+        // ]);
 
         $updated = [
             'name' => $request->get('name'),

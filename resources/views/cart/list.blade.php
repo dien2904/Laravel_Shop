@@ -1,5 +1,6 @@
 @extends('layout')
 @section('content')
+
 <div class="container">
     <section class="shopping-cart spad">
         <div class="container">
@@ -86,6 +87,7 @@
                 </div>
             </div>
         </div>
+        
     </section>
 </div>
 @endsection

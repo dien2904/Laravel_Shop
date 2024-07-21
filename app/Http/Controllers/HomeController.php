@@ -23,6 +23,7 @@ class HomeController extends Controller
 
         return view('users', ['users' => $results]);
     }
+    
     public function detailUsers(Request $request)
     {
         $users = DB::table('users')->select('id', 'name', 'email');

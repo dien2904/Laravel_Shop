@@ -40,12 +40,15 @@ class ProductController extends Controller
 
     public function index()
     {
-        echo "index call create ";
-        // $categories = DB::table('category')->select('id', 'name', 'description');
         $products = Product::orderBy('id', 'DESC')->paginate(12);
         // $results  = ($categories->get());
         // var_dump($products);
-        return view('product.list',  ['products' => $products]);
+        $template = 'product.list';
+
+        return view('dashboard.layout',compact(
+            'template' ,
+            'products'
+        ));
     }
 
 
@@ -55,9 +58,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        echo "index call create ";
+        
         $categories = Category::all();
-        return view('product.create', ['categories' => $categories]);
+        $template = 'product.create';
+
+        return view('dashboard.layout',compact(
+            'template' ,
+            'categories'
+        ));
     }
 
     /**
@@ -78,22 +86,33 @@ class ProductController extends Controller
             ],
         ]);
 
+        // if ($request->hasFile('image')) {
+        //     $imageName = time() . '.' . $request->image->extension();
+        //     $request->image->move(public_path('images'), $imageName);
+        // } else {
+        //     return back()->withErrors(['image' => 'Image upload failed. Please try again.']);
+        // }
+
+        // $product = new Product();
+        // $product->name = $request->input('name');
+        // $product->description = $request->input('description');
+        // $product->price = $request->input('price');
+        // $product->category_id = (int)$request->input('category_id');
+        // $product->image = $imageName;
+        // $product->save();
+
+        $input = $request->all();
+        
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-        } else {
-            return back()->withErrors(['image' => 'Image upload failed. Please try again.']);
+            $image = $request->file('image'); // Get the uploaded file
+            $imageName = time() . '_' . $image->getClientOriginalName(); // Create a unique name for the image
+            $image->move(public_path('uploads/products'), $imageName); // Move the image to the uploads/products directory
+            $input['image'] = 'uploads/products/' . $imageName; // Set the image path in the input array
         }
 
-        $product = new Product();
-        $product->name = $request->input('name');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->category_id = (int)$request->input('category_id');
-        $product->image = $imageName;
-        $product->save();
+        $product = Product::create($input);
 
-        return back()->with('success', 'You have successfully uploaded the image.');
+        return back()->with('success', 'Create product successfully.');
     }
 
     /**
@@ -109,10 +128,15 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        echo "index call ";
-        $categories = Product::where('id', $id);
-        $results  = ($categories->get());
-        return view('category.edit', ['category' => $results[0]]);
+        // var_dump($id);
+        
+        $result = Product::where('id', $id)->first();
+        $template = 'product.edit';
+        // var_dump($results[0]->name);
+        return view('dashboard.layout',compact(
+            'template' ,
+            'result'
+        ));
     }
 
     /**
@@ -122,16 +146,20 @@ class ProductController extends Controller
     {
         $validated =  $request->validate([
             'name' => 'required|max:255',
+            'price' => 'required' ,
+            'image' => 'max:100' ,
             'description' => 'required',
         ]);
         var_dump($request->all());
 
         $updated = [
             'name' => $request->get('name'),
+            'price' => $request->get('price'),
+            'image' => $request->get('image'),
             'description' => $request->get('description')
         ];
         $blog = Product::where('id', $id)->update($updated);
-        return redirect()->route('categories.index')->with('success', 'Cập nhật thành công');
+        return redirect()->route('product.index')->with('success', 'Cập nhật thành công');
     }
 
     /**

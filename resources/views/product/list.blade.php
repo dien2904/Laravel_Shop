@@ -1,5 +1,4 @@
-@extends('layout')
-@section('content')
+<h2>Product Management</h2>
 <div class="container">
     @if(session()->has('success'))
     <div class="alert alert-success">
@@ -7,11 +6,7 @@
     </div>
     @endif
     <a href="{{route('products.create')}}" class="btn btn-success mb-3">Create</a>
-    @if (4%2==0)
-    la so chan
-    @else
-    khong phai la so chan
-    @endif
+    
     <table class="table">
         <thead>
             <tr>
@@ -19,7 +14,8 @@
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Image</th>
-                <th scope="col">Action</th>
+                <th scope="col">Description</th>
+                <th scope="col" class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -44,13 +40,13 @@
                     <img src=" {{asset('/images/'.$prod->image)}}" class="img-thumbnail" width="100px" />
                     @endif
                 </td>
-                <td>
-                    <form method="post" action="{{route('products.destroy',[$prod->id])}}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">delele</button>
-                    </form>
-                    <a href="{{route('products.edit',[$prod->id])}}" class="btn btn-info">Edit</a>
+                <td>{{$prod->description}}</td>
+                <td class="text-center">
+                    <div class="text-center">
+                        <a href="{{ route('product.edit',$prod->id) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+                        <a href="{{ route('product.destroy',$prod->id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
+                    </div>
+                    
                 </td>
             </tr>
         </tbody>
@@ -62,4 +58,3 @@
 
 </div>
 
-@endsection

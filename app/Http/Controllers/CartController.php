@@ -16,6 +16,7 @@ class CartController extends Controller
 
         $carts = Cart::content();
         return view('cart.list', compact('carts'));
+        
     }
 
     /**
@@ -66,7 +67,7 @@ class CartController extends Controller
      */
     public function destroy(string $rowId)
     {
-        // var_dump(Cart::content());
+       
         Cart::remove($rowId);
         return redirect('cart',)->with('success', 'Successfully deleted');
     }

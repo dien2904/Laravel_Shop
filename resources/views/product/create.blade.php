@@ -1,5 +1,5 @@
-@extends('layout')
-@section('content')
+<h2>Create Product</h2>
+
 <div class="container">
     @if(session()->has('success'))
     <div class="alert alert-success">
@@ -13,12 +13,13 @@
     <br />
     @endforeach
     <a href="{{route('products.index')}}" class="btn btn-info">List</a>
-    <h3>Thêm Sản phẩm</h3>
+    <br>
+    <br>
     <form method="post" action="{{url('products')}}" enctype="multipart/form-data">
         @csrf
         <input class="form-control" placeholder="enter name" type="text" name="name" value="{{ old('name') }}">
         <input class="form-control mt-3 bt-3" placeholder="enter price" type="number" name="price" value="{{ old('price') }}">
-        <select name="category_id" class="form-control mt-3">
+        <select name="category_id" class="form-control mt-3" >
             @foreach ($categories as $category)
             <option value="{{ $category->id }}" @selected(old('category_id')==$category->id)>
                 {{ $category->name }}
@@ -33,4 +34,3 @@
         <input type="submit" class="btn btn-primary mt-3" value="create">
     </form>
 </div>
-@endsection

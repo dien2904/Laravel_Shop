@@ -8,7 +8,8 @@
         "anayarojo/shoppingcart": "^4.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "php-flasher/flasher-laravel": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

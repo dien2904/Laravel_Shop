@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\OrderShipped;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -24,37 +25,41 @@ class CheckoutController extends Controller
     {
         return floatval(preg_replace('/[^\d.]/', '', Cart::total()));
     }
+
     public function checkout(Request $request)
     {
         $request->validate([
             'phone' => 'required',
             'email' => 'required|email',
         ]);
+
         $user_id = Auth::user()->id;
-        $total =  $this->cartTotalAsNumber();
-        $order = Order::create(array(
+        $total = $this->cartTotalAsNumber();
+
+        $order = Order::create([
             'user_id' => $user_id,
-            'total' =>  $total,
+            'total' => $total,
             'phone' => $request->phone,
             'address' => $request->address,
             'note' => $request->note,
             'name' => $request->name,
-            'order_status' => 'pending',
+            'order_status' => 'Pending',
+        ]);
 
-        ));
-        // theme cart item 
         foreach (Cart::content() as $item) {
-            var_dump($item);
-            $orderItem = OrderItem::create(array(
+            OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item->id,
                 'quantity' => $item->qty,
                 'price' => $item->price,
-            ));
+            ]);
         }
+
         Cart::destroy();
-        Mail::to($request->user())->send(new OrderShipped($order));
+
+        Mail::to($request->email)->send(new OrderShipped($order));
 
         return view('checkout.checkoutTK');
+        
     }
 }

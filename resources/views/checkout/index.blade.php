@@ -12,7 +12,7 @@
                                     here</a> to enter your code</h6>
                             <h6 class="checkout__title">Billing Details</h6>
                             <?php
-                            var_dump($errors);
+                            
                             ?>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -101,8 +101,10 @@
                                     @endforeach
                                 </ul>
                                 <ul class="checkout__total__all">
-                                    <li>Subtotal <span>$750.99</span></li>
-                                    <li>Total <span>$750.99</span></li>
+                                    @foreach ($carts as $cart )
+                                    <li>subtotal <span>${{$cart->subtotal}}</span></li>
+                                    <li>Total <span>${{$cart->total}}</span></li>
+                                    @endforeach
                                 </ul>
                                 <div class="checkout__input__checkbox">
                                     <label for="acc-or">
@@ -115,11 +117,12 @@
                                     ut labore et dolore magna aliqua.</p>
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">
-                                        Check Payment
+                                        COD
                                         <input type="checkbox" id="payment">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
+
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
                                         Paypal
@@ -132,6 +135,13 @@
                         </div>
                     </div>
                 </form>
+                <form action="{{url('/vnpay_payment')}}" method="POST">
+                    @csrf
+                    @foreach($carts as $cart)
+                    {{-- <input type="hidden" name="total" id="total" value="{{$cart->total}}" >  --}}
+                    @endforeach
+                   <button type="submit" name="redirect">VnPay</button>
+                   </form>
             </div>
         </div>
     </section>

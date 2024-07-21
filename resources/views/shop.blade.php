@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="hero__items set-bg" data-setbg="img/hero/hero-2.jpg">
             <div class="container">
                 <div class="row">
@@ -123,8 +124,8 @@
                             <input type="hidden" name="name" value="{{ $product->name}}" />
                             <input type="hidden" name="id" value="{{ $product->id}}" />
                             <input type="hidden" name="price" value="{{ $product->price}}" />
-                            <button type="submit">Add To Carts
-                            </button>
+                            <button type="submit">Add To Carts</button>
+                            <a href="{{ route('product.detail', ['id' => $product->id]) }}">Detail</a>
 
                         </form>
 
